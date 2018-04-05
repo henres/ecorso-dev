@@ -1,0 +1,7 @@
+/data/
+!/build/*.sh
+/build/
+/**/.docker-sync/
+.DS_Store
+.env
+.env.bak

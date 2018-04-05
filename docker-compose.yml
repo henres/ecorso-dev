@@ -1,0 +1,36 @@
+version: '3'
+services:
+    redis:
+        image: "redis:latest"
+        volumes:
+          - "./data/espace-perso/redis/:/data"
+
+    postgres:
+        image: "postgres:latest"
+        volumes:
+            - "./data/espace-perso/postgres:/var/lib/postgres"
+        tty: true
+        environment:
+            POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+        ports:
+            - 54321:5432
+
+    yarn:
+        image: "kkarczmarczyk/node-yarn:latest"
+        entrypoint:
+            - "yarn"
+        command:
+            - "start"
+        user: 1000:1000
+        depends_on:
+            - "postgres"
+            - "redis"
+        tty: true
+        working_dir: "/app"
+        ports:
+            - "3000:3000"
+        volumes:
+            - "${PROJECT_FOLDER}:/app"
+
+volumes:
+    logvolume01: {}
